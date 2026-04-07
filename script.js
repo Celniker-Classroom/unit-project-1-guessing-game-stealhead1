@@ -8,34 +8,34 @@ let score;
 let scoreAverage
 const scoreList = [];
 //shorthand, got tired of typing document.getElementById
-function getElement(id){
+function getElement(id) {
     return document.getElementById(id);
 }
 //gets name of player
-function getName(){
+function getName() {
     let temp = prompt("Enter your name");
     //makes first letter uppercase and the rest lowercase
-    pName = temp[0].toUpperCase() + temp.toLowerCase().slice(1,temp.length);
+    pName = temp[0].toUpperCase() + temp.toLowerCase().slice(1, temp.length);
 }
 //checks proximity of guess to answer
-function hotOrCold(){
-    if(Math.abs(guess - targetNumber) <= 2){
+function hotOrCold() {
+    if (Math.abs(guess - targetNumber) <= 2) {
         return "hot"
     }
-    else if (Math.abs(guess-targetNumber) <=5){
+    else if (Math.abs(guess - targetNumber) <= 5) {
         return "warm"
     }
-    else if(Math.abs(guess - targetNumber) > 5){
+    else if (Math.abs(guess - targetNumber) > 5) {
         return "cold"
     }
 }
 //gets the target number and enables
-function play(){
+function play() {
     //gets value so we know range
     range = document.querySelector('input[name = "level"]:checked').value;
     //disables all radio buttons
     let radioButtons = document.getElementsByName("level");
-    for(i = 0; i<radioButtons.length;i++){
+    for (i = 0; i < radioButtons.length; i++) {
         radioButtons[i].disabled = true;
     }
     //disables play button and enables the guess and giveup
@@ -49,31 +49,39 @@ function play(){
     //resets score
     score = 0;
 }
-function makeGuess(){
+function makeGuess() {
     //gets guess from text field
     guess = getElement("guess").value;
-    score ++;
+    score++;
     //checks if guess is more less or equal and changes msg
-    if(parseInt(guess) == targetNumber){
-        //updates win and html elements
-        wins ++;
+    if (parseInt(guess) == targetNumber) {
+        //updates win and html element
+        wins++;
         getElement("msg").innerHTML = "Correct, " + pName;
-        getElement("guessBtn").disabled = true;
         getElement("wins").innerHTML = "Total wins: " + wins;
         //appends score to all scores and calculates average and displays average
         scoreList[scoreList.length] = score;
         let temp = 0;
-        for (i = 0; i < scoreList.length;i++){
+        for (i = 0; i < scoreList.length; i++) {
             temp = temp + scoreList[i];
         }
-        scoreAverage = temp;
+        scoreAverage = temp / scoreList.length;
         getElement("avgScore").innerHTML = "Average Score: " + scoreAverage;
+        //restarts game
+        getElement("guessBtn").disabled = true;
+        getElement("giveUpBtn").disabled = true;
+        getElement("playBtn").disabled = false;
+        let radioButtons = document.getElementsByName("level");
+        for (i = 0; i < radioButtons.length; i++) {
+            radioButtons[i].disabled = false;
+        }
+
     }
-    else if(parseInt(guess) > targetNumber){
+    else if (parseInt(guess) > targetNumber) {
         getElement("msg").innerHTML = "Too high " + pName + ", and you're " + hotOrCold();
 
     }
-    else if(parseInt(guess) < targetNumber){
+    else if (parseInt(guess) < targetNumber) {
         getElement("msg").innerHTML = "Too low " + pName + ", and you're " + hotOrCold();
     }
 }
