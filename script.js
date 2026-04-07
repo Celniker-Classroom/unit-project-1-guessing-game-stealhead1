@@ -40,7 +40,7 @@ function play(){
     getElement("guessBtn").disabled = false;
     getElement("giveUpBtn").disabled = false;
     //changes msg
-    getElement("msg").innerHTML = "Guess";
+    getElement("msg").innerHTML = "Take a guess, " + pName;
     //generates a number
     targetNumber = Math.floor(Math.random() * range + 1);
 }
