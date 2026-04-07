@@ -1,9 +1,12 @@
 // add javascript here
 let range;
 let targetNumber;
-let wins;
+let wins = 0;
 let pName;
-let guess
+let guess;
+let score;
+let scoreAverage
+const scoreList = [];
 //shorthand, got tired of typing document.getElementById
 function getElement(id){
     return document.getElementById(id);
@@ -43,14 +46,28 @@ function play(){
     getElement("msg").innerHTML = "Take a guess, " + pName;
     //generates a number
     targetNumber = Math.floor(Math.random() * range + 1);
+    //resets score
+    score = 0;
 }
 function makeGuess(){
     //gets guess from text field
     guess = getElement("guess").value;
+    score ++;
+    //checks if guess is more less or equal and changes msg
     if(parseInt(guess) == targetNumber){
+        //updates win and html elements
         wins ++;
         getElement("msg").innerHTML = "Correct, " + pName;
         getElement("guessBtn").disabled = true;
+        getElement("wins").innerHTML = "Total wins: " + wins;
+        //appends score to all scores and calculates average and displays average
+        scoreList[scoreList.length] = score;
+        let temp = 0;
+        for (i = 0; i < scoreList.length;i++){
+            temp = temp + scoreList[i];
+        }
+        scoreAverage = temp;
+        getElement("avgScore").innerHTML = "Average Score: " + scoreAverage;
     }
     else if(parseInt(guess) > targetNumber){
         getElement("msg").innerHTML = "Too high " + pName + ", and you're " + hotOrCold();
