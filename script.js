@@ -57,7 +57,7 @@ function makeGuess(){
 
     }
     else if(parseInt(guess) < targetNumber){
-        getElement("msg").innerHTML = "Too low" + pName + ", and you're " + hotOrCold();
+        getElement("msg").innerHTML = "Too low " + pName + ", and you're " + hotOrCold();
     }
 }
 getElement("playBtn").addEventListener("click", play);
