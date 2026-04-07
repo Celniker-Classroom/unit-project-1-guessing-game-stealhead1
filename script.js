@@ -59,8 +59,26 @@ function makeGuess() {
         wins++;
         getElement("msg").innerHTML = "Correct, " + pName;
         getElement("wins").innerHTML = "Total wins: " + wins;
-        //appends score to all scores and calculates average and displays average
-        scoreList[scoreList.length] = score;
+        //appends score to all scores, sorts list and calculates average and displays average
+        if(scoreList.length == 0){
+            scoreList[0] = score;
+        }
+        else{
+            const temp = [];
+            for (i = 0; i<scoreList.length;i++){
+                if(score < scoreList[i]){
+                    temp[i] = scoreList[i];
+                }
+                else if (score >= scoreList[i]){
+                    temp[i] = score;
+                    temp.slice(i+1, scoreList.length) = scoreList[i,scoreList.length - 1];
+                    break;
+                }
+            }
+            scoreList = temp;
+        }
+        // scoreList[scoreList.length] = score;
+        // scoreList
         let temp = 0;
         for (i = 0; i < scoreList.length; i++) {
             temp = temp + scoreList[i];
@@ -75,6 +93,8 @@ function makeGuess() {
         for (i = 0; i < radioButtons.length; i++) {
             radioButtons[i].disabled = false;
         }
+        //updates leaderboard
+        let leaderboard = document.getElementsByName("leaderboard");
 
     }
     else if (parseInt(guess) > targetNumber) {
