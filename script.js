@@ -11,72 +11,89 @@ const scoreList = [];
 function getElement(id) {
     return document.getElementById(id);
 }
-//gets name of player
-function getName() {
-    let temp = prompt("Enter your name");
-    //makes first letter uppercase and the rest lowercase
-    pName = temp[0].toUpperCase() + temp.toLowerCase().slice(1, temp.length);
-}
-//checks proximity of guess to answer
-function hotOrCold() {
-    if (Math.abs(guess - targetNumber) <= 2) {
-        return "hot"
+function sortScores() {
+    //if it's the first game, add the score
+    if (scoreList.length == 0) {
+        scoreList[0] = score;
     }
-    else if (Math.abs(guess - targetNumber) <= 5) {
-        return "warm"
-    }
-    else if (Math.abs(guess - targetNumber) > 5) {
-        return "cold"
-    }
-}
-//gets the target number and enables
-function play() {
-    //gets value so we know range
-    range = document.querySelector('input[name = "level"]:checked').value;
-    //disables all radio buttons
-    let radioButtons = document.getElementsByName("level");
-    for (i = 0; i < radioButtons.length; i++) {
-        radioButtons[i].disabled = true;
-    }
-    //disables play button and enables the guess and giveup
-    getElement("playBtn").disabled = true;
-    getElement("guessBtn").disabled = false;
-    getElement("giveUpBtn").disabled = false;
-    //changes msg
-    getElement("msg").innerHTML = "Take a guess, " + pName;
-    //generates a number
-    targetNumber = Math.floor(Math.random() * range + 1);
-    //resets score
-    score = 0;
-}
-function makeGuess() {
-    //gets guess from text field
-    guess = getElement("guess").value;
-    score++;
-    //checks if guess is more less or equal and changes msg
-    if (parseInt(guess) == targetNumber) {
-        //updates win and html element
-        wins++;
-        getElement("msg").innerHTML = "Correct, " + pName;
-        getElement("wins").innerHTML = "Total wins: " + wins;
-        //appends score to all scores, sorts list and calculates average and displays average
-        if(scoreList.length == 0){
-            scoreList[0] = score;
-        }
-        else{
-            const temp = [];
-            for (i = 0; i<scoreList.length;i++){
-                if(score < scoreList[i]){
-                    temp[i] = scoreList[i];
-                }
-                else if (score >= scoreList[i]){
-                    temp[i] = score;
-                    temp.slice(i+1, scoreList.length) = scoreList[i,scoreList.length - 1];
-                    break;
-                }
+    else {
+        //create a temporary array to store the sorted scores
+        const temp = [];
+        //loop through the score list and compare the score to each stored score
+        for (i = 0; i < scoreList.length; i++) {
+            //if score is smaller than stored score, add the stored score and current score, to deal with an edge case
+            if (score < scoreList[i] && i == scoreList.length - 1) {
+                temp[i] = scoreList[i];
+                temp[i + 1] = score;
+                break;
             }
-            scoreList = temp;
+            //add stored score if it's bigger than current score
+            else if (score < scoreList[i]) {
+                temp[i] = scoreList[i];
+            }
+            //if score is bigger than stored score, add current score and all other stored scores, then end loop
+            else if (score >= scoreList[i]) {
+                temp[i] = score;
+                for (k = i + 1; k <= scoreList.length + 1; k++) {
+                    temp[k] = scoreList[k - 1]
+                }
+                scoreList = temp;
+                break;
+            }
         }
+    }
+}
+    //gets name of player
+    function getName() {
+        let temp = prompt("Enter your name");
+        //makes first letter uppercase and the rest lowercase
+        pName = temp[0].toUpperCase() + temp.toLowerCase().slice(1, temp.length);
+    }
+    //checks proximity of guess to answer
+    function hotOrCold() {
+        if (Math.abs(guess - targetNumber) <= 2) {
+            return "hot"
+        }
+        else if (Math.abs(guess - targetNumber) <= 5) {
+            return "warm"
+        }
+        else if (Math.abs(guess - targetNumber) > 5) {
+            return "cold"
+        }
+    }
+    //gets the target number and enables
+    function play() {
+        //gets value so we know range
+        range = document.querySelector('input[name = "level"]:checked').value;
+        //disables all radio buttons
+        let radioButtons = document.getElementsByName("level");
+        for (i = 0; i < radioButtons.length; i++) {
+            radioButtons[i].disabled = true;
+        }
+        //disables play button and enables the guess and giveup
+        getElement("playBtn").disabled = true;
+        getElement("guessBtn").disabled = false;
+        getElement("giveUpBtn").disabled = false;
+        //changes msg
+        getElement("msg").innerHTML = "Take a guess, " + pName;
+        //generates a number
+        targetNumber = Math.floor(Math.random() * range + 1);
+        //resets score
+        score = 0;
+    }
+    function makeGuess() {
+        //gets guess from text field
+        guess = getElement("guess").value;
+        score++;
+        //checks if guess is more less or equal and changes msg
+        if (parseInt(guess) == targetNumber) {
+            //updates win and html element
+            wins++;
+            getElement("msg").innerHTML = "Correct, " + pName;
+            getElement("wins").innerHTML = "Total wins: " + wins;
+            //appends score to all scores, sorts list and calculates average and displays average
+            sortScores();
+        
         // scoreList[scoreList.length] = score;
         // scoreList
         let temp = 0;
