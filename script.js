@@ -1,4 +1,4 @@
-// add javascript here
+// declare variables used everywhere
 let range;
 let targetNumber;
 let wins = 0;
@@ -160,4 +160,4 @@ setInterval(time, 1000);
 getElement("playBtn").addEventListener("click", play);
 getElement("guessBtn").addEventListener("click", makeGuess);
 getElement("giveUpBtn").addEventListener("click", giveUp);
-setTimeout(getName, 500);
+getName();
