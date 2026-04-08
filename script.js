@@ -141,6 +141,7 @@ function makeGuess() {
         endTime = new Date().getTime();
         let totalTime = (endTime - startTime) / 1000;
         timeList.push(totalTime);
+        averageTime = 0;
         for (i = 0; i < timeList.length; i++) {
             averageTime = averageTime + timeList[i];
         }
@@ -153,7 +154,7 @@ function makeGuess() {
                 fastestTime = timeList[i];
             }
         }
-        getElement("fastestTime").innerHTML = "Fastest Game: " + fastestTime.toFixed(2) + " seconds";
+        getElement("fastest").innerHTML = "Fastest Game: " + fastestTime.toFixed(2) + " seconds";
 
     }
     else if (parseInt(guess) > targetNumber) {
