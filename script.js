@@ -13,14 +13,14 @@ const ending = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
 function getElement(id) {
     return document.getElementById(id);
 }
-function time(){
+function time() {
     var date = new Date().getDate();
-    var suffix;
-    if (date % 10 === 1 && date !== 11) suffix = 'st';
-    else if (date % 10 === 2 && date !== 12) suffix = 'nd';
-    else if (date % 10 === 3 && date !== 13) suffix = 'rd';
-    else suffix = 'th';
-    var day = String(date) + suffix;
+    if (date == 11 || date == 12 || date == 13) {
+        var day = String(date) + "th";
+    }
+    else {
+        var day = String(date) + ending[date % 10];
+    }
     getElement("date").innerHTML = month[new Date().getMonth()] + " " + day + " " + new Date().getFullYear() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
 }
 function sortScores() {
