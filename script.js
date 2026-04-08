@@ -40,6 +40,10 @@ function time() {
     //display the date and time
     getElement("date").innerHTML = month[new Date().getMonth()] + " " + day + " " + new Date().getFullYear() + " " + new Date().getHours() + ":" + minutes + ":" + seconds;
 }
+function gameTime(){
+    var currentTime = new Date().getTime();
+    getElement("currentTime").innerHTML = "Current Time: " + ((currentTime - startTime) * 1000).toFixed(2);
+}
 function sortScores() {
     //if it's the first game, add the score
     if (scoreList.length == 0) {
@@ -107,6 +111,7 @@ function play() {
     score = 0;
     //sets start time
     startTime = new Date().getTime();
+    setInterval(gameTime, 127);
 }
 function updateScore() {
     wins++;
