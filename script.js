@@ -11,6 +11,7 @@ let endTime;
 let averageTime = 0;
 let hotRange;
 let warmRange;
+let gameTimer;
 const scoreList = [];
 const timeList = [];
 const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -42,21 +43,13 @@ function time() {
 }
 function gameTime(){
     var currentTime = new Date().getTime();
-    getElement("currentTime").innerHTML = "Current Time: " + ((currentTime - startTime) * 1000).toFixed(2);
+    getElement("currentTime").innerHTML = "Current Time: " + ((currentTime - startTime) / 1000).toFixed(2);
 }
 function sortScores() {
-    //if it's the first game, add the score
-    if (scoreList.length == 0) {
-        scoreList[0] = score;
-    }
-    else {
-        //add the new score to the list
-        scoreList.push(score);
-        //sort from largest to smallest
-        scoreList.sort(function (a, b) {
-            return a - b;
-        });
-    }
+    scoreList.push(score);
+    scoreList.sort(function (a, b) {
+        return a - b;
+    });
     console.log("sortScores completed. scoreList:", scoreList);
 }
 //gets name of player
@@ -84,16 +77,16 @@ function hotOrCold() {
 //gets the target number and enables
 function play() {
     //checks if range inputs are valid
-    if(getElement("hotBtn").value >= getElement("warmBtn").value || getElement("hotBtn").value == 0){
+    const hotValue = parseInt(getElement("hotBtn").value, 10);
+    const warmValue = parseInt(getElement("warmBtn").value, 10);
+    if (isNaN(hotValue) || isNaN(warmValue) || hotValue <= 0 || hotValue >= warmValue) {
         alert("Invalid Ranges");
         return;
     }
-    else{
-        hotRange = getElement("hotBtn").value;
-        warmRange = getElement("warmBtn").value;
-    }
+    hotRange = hotValue;
+    warmRange = warmValue;
     //gets value so we know range
-    range = parseInt(document.querySelector('input[name = "level"]:checked').value);
+    range = parseInt(document.querySelector('input[name = "level"]:checked').value, 10);
     //disables all radio buttons
     let radioButtons = document.getElementsByName("level");
     for (i = 0; i < radioButtons.length; i++) {
@@ -111,7 +104,11 @@ function play() {
     score = 0;
     //sets start time
     startTime = new Date().getTime();
-    setInterval(gameTime, 127);
+    //clears existing timer if any and starts a new one
+    if (gameTimer) {
+        clearInterval(gameTimer);
+    }
+    gameTimer = setInterval(gameTime, 127);
 }
 function updateScore() {
     wins++;
@@ -134,6 +131,12 @@ function updateScore() {
             leaderboard[i].innerHTML = scoreList[i];
         }
     }
+    //stops timer
+    if (gameTimer) {
+        clearInterval(gameTimer);
+        gameTimer = null;
+    }
+
 }
 function makeGuess() {
     //gets guess from text field
@@ -156,6 +159,8 @@ function makeGuess() {
         //sets end time and calculates total time, appends to list, sorts list and calculates average
         endTime = new Date().getTime();
         let totalTime = (endTime - startTime) / 1000;
+        // To avoid different cycles, sets current time to endTime
+        getElement("currentTime").innerHTML = "Current Time: " + totalTime.toFixed(2);
         timeList.push(totalTime);
         averageTime = 0;
         for (i = 0; i < timeList.length; i++) {
