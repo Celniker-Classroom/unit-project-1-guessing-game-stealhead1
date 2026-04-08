@@ -5,8 +5,12 @@ let wins = 0;
 let pName;
 let guess;
 let score;
-let scoreAverage
+let scoreAverage;
+let startTime;
+let endTime;
+let averageTime = 0;
 const scoreList = [];
+const timeList = [];
 const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const ending = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
 //shorthand, got tired of typing document.getElementById
@@ -90,6 +94,8 @@ function play() {
     targetNumber = Math.floor(Math.random() * range + 1);
     //resets score
     score = 0;
+    //sets start time
+    startTime = new Date().getTime();
 }
 function updateScore() {
     wins++;
@@ -131,6 +137,16 @@ function makeGuess() {
         for (i = 0; i < radioButtons.length; i++) {
             radioButtons[i].disabled = false;
         }
+        //sets end time and calculates total time, appends to list, sorts list and calculates average
+        endTime = new Date().getTime();
+        let totalTime = (endTime - startTime) / 1000;
+        timeList.push(totalTime);
+        for (i = 0; i < timeList.length; i++) {
+            averageTime = averageTime + timeList[i];
+        }
+        averageTime = averageTime / timeList.length;
+        getElement("avgTime").innerHTML = "Average Time: " + averageTime.toFixed(2) + " seconds";
+
     }
     else if (parseInt(guess) > targetNumber) {
         getElement("msg").innerHTML = "Too high " + pName + ", and you're " + hotOrCold();
