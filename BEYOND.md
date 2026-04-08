@@ -1,0 +1,2 @@
+Lines 83-90 in script.js and lines 16-26 in index.html I added the ability to
+customize the ranges hot and warm are displayed. I belive this improves the game because it allows for added strategy, allows the player to know the ranges and allows the ranges to scale from the easier game mode to the harder one

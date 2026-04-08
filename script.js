@@ -9,6 +9,8 @@ let scoreAverage;
 let startTime;
 let endTime;
 let averageTime = 0;
+let hotRange;
+let warmRange;
 const scoreList = [];
 const timeList = [];
 const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -65,18 +67,27 @@ function getName() {
 }
 //checks proximity of guess to answer
 function hotOrCold() {
-    if (Math.abs(guess - targetNumber) <= 2) {
+    if (Math.abs(guess - targetNumber) <= hotRange) {
         return "hot"
     }
-    else if (Math.abs(guess - targetNumber) <= 5) {
+    else if (Math.abs(guess - targetNumber) <= warmRange) {
         return "warm"
     }
-    else if (Math.abs(guess - targetNumber) > 5) {
+    else if (Math.abs(guess - targetNumber) > warmRange) {
         return "cold"
     }
 }
 //gets the target number and enables
 function play() {
+    //checks if range inputs are valid
+    if(getElement("hotBtn").value >= getElement("warmBtn").value || getElement("hotBtn").value == 0){
+        alert("Invalid Ranges");
+        return;
+    }
+    else{
+        hotRange = getElement("hotBtn").value;
+        warmRange = getElement("warmBtn").value;
+    }
     //gets value so we know range
     range = parseInt(document.querySelector('input[name = "level"]:checked').value);
     //disables all radio buttons
