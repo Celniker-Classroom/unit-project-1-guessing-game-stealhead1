@@ -68,17 +68,14 @@ function makeGuess() {
     //gets guess from text field
     guess = getElement("guess").value;
     score++;
-    alert("Guess:" + guess + ", Target:" + targetNumber + ", Score:" + score + ", scoreList before:" + scoreList);
     //checks if guess is more less or equal and changes msg
     if (parseInt(guess) == targetNumber) {
-        alert("CORRECT!");
         //updates win and html element
         wins++;
         getElement("msg").innerHTML = "Correct, " + pName;
         getElement("wins").innerHTML = "Total wins: " + wins;
         //appends score to all scores, sorts list and calculates average and displays average
         sortScores();
-        alert("scoreList after sortScores:" + scoreList);
 
         // Calculate and display average
         let temp = 0;
@@ -88,6 +85,16 @@ function makeGuess() {
         scoreAverage = temp / scoreList.length;
         getElement("avgScore").innerHTML = "Average Score: " + scoreAverage;
 
+        //updates leaderboard
+        let leaderboard = document.getElementsByName("leaderboard");
+        for (i = 0; i < leaderboard.length; i++) {
+            if(scoreList[i] == undefined) {
+                leaderboard[i].innerHTML = "--";
+            }
+            else{
+                leaderboard[i].innerHTML = scoreList[i];
+            }
+        }
         //restarts game
         getElement("guessBtn").disabled = true;
         getElement("giveUpBtn").disabled = true;
