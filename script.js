@@ -146,6 +146,14 @@ function makeGuess() {
         }
         averageTime = averageTime / timeList.length;
         getElement("avgTime").innerHTML = "Average Time: " + averageTime.toFixed(2) + " seconds";
+        //finds fastest time
+        let fastestTime;
+        for (i = 0; i < timeList.length; i++) {
+            if (fastestTime == undefined || timeList[i] < fastestTime) {
+                fastestTime = timeList[i];
+            }
+        }
+        getElement("fastestTime").innerHTML = "Fastest Game: " + fastestTime.toFixed(2) + " seconds";
 
     }
     else if (parseInt(guess) > targetNumber) {
