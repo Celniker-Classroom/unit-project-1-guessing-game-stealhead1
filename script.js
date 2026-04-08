@@ -160,4 +160,4 @@ setInterval(time, 1000);
 getElement("playBtn").addEventListener("click", play);
 getElement("guessBtn").addEventListener("click", makeGuess);
 getElement("giveUpBtn").addEventListener("click", giveUp);
-getName();
+setTimeout(getName, 100);
