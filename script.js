@@ -34,13 +34,14 @@ function sortScores() {
             //if score is bigger than stored score, add current score and all other stored scores, then end loop
             else if (score >= scoreList[i]) {
                 temp[i] = score;
-                for (k = i + 1; k <= scoreList.length + 1; k++) {
+                for (k = i + 1; k < scoreList.length + 1; k++) {
                     temp[k] = scoreList[k - 1]
                 }
                 scoreList = temp;
                 break;
             }
         }
+        scoreList = temp;
     }
 }
     //gets name of player
@@ -85,43 +86,42 @@ function sortScores() {
         //gets guess from text field
         guess = getElement("guess").value;
         score++;
+        console.log("Guess:", guess, "Target:", targetNumber, "Score:", score, "scoreList before:", scoreList);
         //checks if guess is more less or equal and changes msg
         if (parseInt(guess) == targetNumber) {
+            console.log("CORRECT!");
             //updates win and html element
             wins++;
             getElement("msg").innerHTML = "Correct, " + pName;
             getElement("wins").innerHTML = "Total wins: " + wins;
             //appends score to all scores, sorts list and calculates average and displays average
             sortScores();
-        
-        // scoreList[scoreList.length] = score;
-        // scoreList
-        let temp = 0;
-        for (i = 0; i < scoreList.length; i++) {
-            temp = temp + scoreList[i];
+            console.log("scoreList after sortScores:", scoreList);
+            
+            // Calculate and display average
+            let temp = 0;
+            for (i = 0; i < scoreList.length; i++) {
+                temp = temp + scoreList[i];
+            }
+            scoreAverage = temp / scoreList.length;
+            getElement("avgScore").innerHTML = "Average Score: " + scoreAverage;
+            
+            //restarts game
+            getElement("guessBtn").disabled = true;
+            getElement("giveUpBtn").disabled = true;
+            getElement("playBtn").disabled = false;
+            let radioButtons = document.getElementsByName("level");
+            for (i = 0; i < radioButtons.length; i++) {
+                radioButtons[i].disabled = false;
+            }
         }
-        scoreAverage = temp / scoreList.length;
-        getElement("avgScore").innerHTML = "Average Score: " + scoreAverage;
-        //restarts game
-        getElement("guessBtn").disabled = true;
-        getElement("giveUpBtn").disabled = true;
-        getElement("playBtn").disabled = false;
-        let radioButtons = document.getElementsByName("level");
-        for (i = 0; i < radioButtons.length; i++) {
-            radioButtons[i].disabled = false;
+        else if (parseInt(guess) > targetNumber) {
+            getElement("msg").innerHTML = "Too high " + pName + ", and you're " + hotOrCold();
         }
-        //updates leaderboard
-        let leaderboard = document.getElementsByName("leaderboard");
-
+        else if (parseInt(guess) < targetNumber) {
+            getElement("msg").innerHTML = "Too low " + pName + ", and you're " + hotOrCold();
+        }
     }
-    else if (parseInt(guess) > targetNumber) {
-        getElement("msg").innerHTML = "Too high " + pName + ", and you're " + hotOrCold();
-
-    }
-    else if (parseInt(guess) < targetNumber) {
-        getElement("msg").innerHTML = "Too low " + pName + ", and you're " + hotOrCold();
-    }
-}
 getElement("playBtn").addEventListener("click", play);
 getElement("guessBtn").addEventListener("click", makeGuess);
 
