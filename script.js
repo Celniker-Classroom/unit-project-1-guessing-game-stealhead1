@@ -7,9 +7,21 @@ let guess;
 let score;
 let scoreAverage
 const scoreList = [];
+const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const ending = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
 //shorthand, got tired of typing document.getElementById
 function getElement(id) {
     return document.getElementById(id);
+}
+function time(){
+    var date = new Date().getDate();
+    var suffix;
+    if (date % 10 === 1 && date !== 11) suffix = 'st';
+    else if (date % 10 === 2 && date !== 12) suffix = 'nd';
+    else if (date % 10 === 3 && date !== 13) suffix = 'rd';
+    else suffix = 'th';
+    var day = String(date) + suffix;
+    getElement("date").innerHTML = month[new Date().getMonth()] + " " + day + " " + new Date().getFullYear() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
 }
 function sortScores() {
     //if it's the first game, add the score
@@ -29,8 +41,12 @@ function sortScores() {
 //gets name of player
 function getName() {
     let temp = prompt("Enter your name");
-    //makes first letter uppercase and the rest lowercase
-    pName = temp[0].toUpperCase() + temp.toLowerCase().slice(1, temp.length);
+    if (!temp || temp.trim() === "") {
+        pName = "Player";
+    } else {
+        //makes first letter uppercase and the rest lowercase
+        pName = temp[0].toUpperCase() + temp.toLowerCase().slice(1, temp.length);
+    }
 }
 //checks proximity of guess to answer
 function hotOrCold() {
@@ -132,3 +148,4 @@ getElement("playBtn").addEventListener("click", play);
 getElement("guessBtn").addEventListener("click", makeGuess);
 getElement("giveUpBtn").addEventListener("click", giveUp);
 getName();
+setInterval(time, 1000);
