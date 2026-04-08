@@ -15,13 +15,24 @@ function getElement(id) {
 }
 function time() {
     var date = new Date().getDate();
+    //figure out suffix
     if (date == 11 || date == 12 || date == 13) {
         var day = String(date) + "th";
     }
     else {
         var day = String(date) + ending[date % 10];
     }
-    getElement("date").innerHTML = month[new Date().getMonth()] + " " + day + " " + new Date().getFullYear() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+    //add 0 if seconds or minutes is less than 10 so it looks better
+    var seconds = new Date().getSeconds();
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    var minutes = new Date().getMinutes();
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    //display the date and time
+    getElement("date").innerHTML = month[new Date().getMonth()] + " " + day + " " + new Date().getFullYear() + " " + new Date().getHours() + ":" + minutes + ":" + seconds;
 }
 function sortScores() {
     //if it's the first game, add the score
@@ -144,8 +155,9 @@ function giveUp() {
         radioButtons[i].disabled = false;
     }
 }
+time();
 setInterval(time, 1000);
 getElement("playBtn").addEventListener("click", play);
 getElement("guessBtn").addEventListener("click", makeGuess);
 getElement("giveUpBtn").addEventListener("click", giveUp);
-getName();
+setTimeout(getName, 500);
