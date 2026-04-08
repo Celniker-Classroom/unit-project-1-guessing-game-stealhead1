@@ -21,7 +21,7 @@ function sortScores() {
             scoreList.push(score);
             //sort from largest to smallest
             scoreList.sort(function(a, b) {
-                return b - a;
+                return a - b;
             });
         }
         console.log("sortScores completed. scoreList:", scoreList);
