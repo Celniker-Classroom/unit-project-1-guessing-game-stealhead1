@@ -1,0 +1,24 @@
+#ranges{
+    /* border: black solid 2px; */
+    width: 450px;
+    padding: 0px;
+    display: flex;
+}
+#hotButtons{
+    /* border: black solid 5px; */
+    width: 200px;
+}
+#warmButtons{
+    /* border: black solid 5px; */
+    width: 200px;
+    float:right;
+}
+#rangesHeading{
+    /* border: black solid 5px; */
+    width: 100px
+}
+#playBtn{
+    margin-top: 10px;
+    width: 450px;
+    text-align: center;
+}
